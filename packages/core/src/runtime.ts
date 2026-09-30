@@ -660,6 +660,11 @@ const normalizeCodexResponsesBodyInternal = (
 		normalized.stream = true
 	}
 	delete normalized.max_output_tokens
+	// The ChatGPT backend-api/codex responses endpoint rejects sampling
+	// parameters like `temperature` and `top_p` with a 400 error, regardless
+	// of model. Callers (e.g. clients that always send these) shouldn't fail.
+	delete normalized.temperature
+	delete normalized.top_p
 	return normalized
 }
 

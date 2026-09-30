@@ -87,6 +87,33 @@ const usage = {
 }
 
 describe("streamChatCompletions", () => {
+	test("does not pass unsupported sampling parameters to the AI SDK", async () => {
+		mockedStreamText.mockReturnValue(
+			fakeFullStream([
+				{
+					type: "finish",
+					finishReason: "stop",
+					totalUsage: usage,
+				},
+			]),
+		)
+
+		await streamChatCompletions(
+			{
+				model: "gpt-6-luna",
+				messages: [{ role: "user", content: "hello" }],
+				temperature: 0,
+				top_p: 0.95,
+			},
+			dummyProvider,
+			dummyLogContext,
+		)
+
+		const options = mockedStreamText.mock.calls.at(-1)?.[0]
+		expect(options).not.toHaveProperty("temperature")
+		expect(options).not.toHaveProperty("topP")
+	})
+
 	test("emits tool call arguments from deltas when model streams them", async () => {
 		mockedStreamText.mockReturnValue(
 			fakeFullStream([

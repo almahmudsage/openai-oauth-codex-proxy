@@ -99,8 +99,6 @@ export const handleChatCompletionsRequest = async (
 			messages: toModelMessages(body.messages),
 			tools: createToolSet(body.tools),
 			toolChoice: toToolChoice(body.tool_choice),
-			temperature: body.temperature,
-			topP: body.top_p,
 			stopSequences:
 				typeof body.stop === "string"
 					? [body.stop]
@@ -110,6 +108,11 @@ export const handleChatCompletionsRequest = async (
 			maxOutputTokens: body.max_tokens,
 			providerOptions: {
 				openai: {
+					// See chat-stream.ts: every Codex/ChatGPT backend model is a
+					// reasoning model, but @ai-sdk/openai only auto-detects
+					// o1/o3/o4-mini/gpt-5* ids. Force it so reasoningEffort isn't
+					// silently dropped for ids like gpt-6-*.
+					forceReasoning: true,
 					parallelToolCalls: body.parallel_tool_calls,
 					reasoningEffort: body.reasoning_effort,
 				},
