@@ -81,7 +81,7 @@ const toUserContent = (content: unknown) => {
 
 	const parts: Array<
 		| { type: "text"; text: string }
-		| { type: "image"; image: URL; mediaType?: string }
+		| { type: "image"; image: URL | string; mediaType?: string }
 	> = []
 
 	for (const item of content) {
@@ -99,8 +99,21 @@ const toUserContent = (content: unknown) => {
 			isRecord(item.image_url) &&
 			typeof item.image_url.url === "string"
 		) {
+			const url = item.image_url.url
+			if (url.startsWith("data:")) {
+				const match = /^data:([^;,]+);base64,([\s\S]*)$/.exec(url)
+				if (match?.[1] && match[2] !== undefined) {
+					parts.push({
+						type: "image",
+						image: match[2],
+						mediaType: match[1],
+					})
+				}
+				continue
+			}
+
 			try {
-				parts.push({ type: "image", image: new URL(item.image_url.url) })
+				parts.push({ type: "image", image: new URL(url) })
 			} catch {}
 		}
 	}

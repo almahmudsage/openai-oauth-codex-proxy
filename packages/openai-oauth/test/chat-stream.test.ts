@@ -11,6 +11,7 @@ vi.mock("ai", async (importOriginal) => {
 
 import type { OpenAIOAuthProvider } from "@openai-oauth/ai-sdk"
 import { streamText } from "ai"
+import { toModelMessages } from "../src/chat-messages.js"
 import { streamChatCompletions } from "../src/chat-stream.js"
 import type { ChatRequest } from "../src/types.js"
 
@@ -85,6 +86,56 @@ const usage = {
 	reasoningTokens: 4,
 	cachedInputTokens: 3,
 }
+
+describe("toModelMessages", () => {
+	test("converts pasted base64 image URLs into image data instead of downloadable URLs", () => {
+		const messages = toModelMessages([
+			{
+				role: "user",
+				content: [
+					{ type: "text", text: "What is in this picture?" },
+					{
+						type: "image_url",
+						image_url: { url: "data:image/png;base64,AQID" },
+					},
+				],
+			},
+		])
+
+		expect(messages).toEqual([
+			{
+				role: "user",
+				content: [
+					{ type: "text", text: "What is in this picture?" },
+					{ type: "image", image: "AQID", mediaType: "image/png" },
+				],
+			},
+		])
+	})
+
+	test("continues to convert remote image URLs", () => {
+		const messages = toModelMessages([
+			{
+				role: "user",
+				content: [
+					{
+						type: "image_url",
+						image_url: { url: "https://example.com/image.png" },
+					},
+				],
+			},
+		])
+
+		expect(messages).toEqual([
+			{
+				role: "user",
+				content: [
+					{ type: "image", image: new URL("https://example.com/image.png") },
+				],
+			},
+		])
+	})
+})
 
 describe("streamChatCompletions", () => {
 	test("does not pass unsupported sampling parameters to the AI SDK", async () => {
