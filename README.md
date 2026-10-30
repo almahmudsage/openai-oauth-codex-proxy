@@ -2,22 +2,31 @@
 
 Run a local OpenAI-compatible API proxy using your ChatGPT account. The proxy supports `/v1/responses`, `/v1/chat/completions`, `/v1/images/generations`, `/v1/images/edits`, and `/v1/models`.
 
-## Quickstart
+## Run the proxy
 
-```bash
-npx openai-oauth@latest
+From the repository root in PowerShell:
+
+```powershell
+bun install
+bun run dev
 ```
 
-The proxy listens at `http://127.0.0.1:10531/v1`. If you are not signed in with Codex locally, the CLI guides you through sign-in and stores credentials in the Codex auth file. Treat that file like a password.
+Set a custom host or port by passing CLI options after `--`:
 
-Press `d` to keep the server running in the background or `q` to quit. Manage it from another terminal:
+```powershell
+bun run dev -- --host 0.0.0.0 --port 8080
+```
 
-```bash
-npx openai-oauth --detach
-npx openai-oauth status
-npx openai-oauth logs --follow
-npx openai-oauth stop
-npx openai-oauth login
+The proxy listens at `http://127.0.0.1:10531/v1` by default. If you are not signed in with Codex locally, the CLI guides you through sign-in and stores credentials in the Codex auth file. Treat that file like a password.
+
+Press `d` to keep the server running in the background or `q` to quit. Manage it from another PowerShell terminal:
+
+```powershell
+bun packages/openai-oauth/src/cli.ts --detach
+bun packages/openai-oauth/src/cli.ts status
+bun packages/openai-oauth/src/cli.ts logs --follow
+bun packages/openai-oauth/src/cli.ts stop
+bun packages/openai-oauth/src/cli.ts login
 ```
 
 ## Configuration
@@ -46,16 +55,7 @@ The `/v1/responses` endpoint is stateless and expects callers to send the full c
 
 ## Development
 
-Requires Bun 1.3.11 and Node.js 20 or later.
-
-Run the proxy from the repository root in PowerShell:
-
-```powershell
-bun install
-bun run dev
-```
-
-The server listens at `http://127.0.0.1:10531/v1`. To build and verify the workspace:
+Requires Bun 1.3.11 and Node.js 20 or later. To build and verify the project from the repository root in PowerShell:
 
 ```powershell
 bun run build
@@ -63,7 +63,13 @@ bun run test
 bun run typecheck
 ```
 
-The proxy CLI lives in `packages/openai-oauth`; its `core`, `local`, and `ai-sdk` workspace packages provide required runtime functionality.
+To build and then run the CLI from its generated `dist` files:
+
+```powershell
+bun run start:dist
+```
+
+Pass CLI options the same way, for example `bun run start:dist -- --host 127.0.0.1 --port 8080`.
 
 ## Legal
 

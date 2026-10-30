@@ -1,6 +1,6 @@
 # openai-oauth
 
-[Docs](https://github.com/EvanZhouDev/openai-oauth#dev-proxy) | [GitHub](https://github.com/EvanZhouDev/openai-oauth) | [npm](https://www.npmjs.com/package/openai-oauth)
+[Repository](https://github.com/EvanZhouDev/openai-oauth)
 
 Turn your ChatGPT account into an OpenAI-compatible local API.
 

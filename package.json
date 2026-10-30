@@ -16,6 +16,7 @@
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "bun run --cwd packages/openai-oauth dev",
+		"start:dist": "bun run build && bun packages/openai-oauth/dist/cli.js",
 		"typecheck": "turbo run typecheck",
 		"test": "turbo run test",
 		"check:release": "bun scripts/check-release.mjs",
