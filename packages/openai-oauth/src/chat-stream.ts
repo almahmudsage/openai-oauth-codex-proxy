@@ -56,8 +56,6 @@ export const streamChatCompletions = async (
 		messages: toModelMessages(request.messages ?? []),
 		tools: createToolSet(request.tools),
 		toolChoice: toToolChoice(request.tool_choice),
-		temperature: request.temperature,
-		topP: request.top_p,
 		stopSequences:
 			typeof request.stop === "string"
 				? [request.stop]
@@ -67,6 +65,12 @@ export const streamChatCompletions = async (
 		maxOutputTokens: request.max_tokens,
 		providerOptions: {
 			openai: {
+				// Every model served by the Codex/ChatGPT backend is a reasoning
+				// model, but @ai-sdk/openai only recognizes o1/o3/o4-mini/gpt-5*
+				// model ids as reasoning models. Force reasoning mode so newer
+				// ids (e.g. gpt-6-*) still get reasoningEffort applied instead of
+				// silently dropped with a warning.
+				forceReasoning: true,
 				parallelToolCalls: request.parallel_tool_calls,
 				reasoningEffort: request.reasoning_effort,
 			},

@@ -71,6 +71,17 @@ describe("normalizeCodexResponsesBody", () => {
 		expect("max_output_tokens" in normalized).toBe(false)
 	})
 
+	test("strips unsupported sampling parameters temperature and top_p", () => {
+		const normalized = normalizeCodexResponsesBody({
+			model: "gpt-5.2",
+			temperature: 0,
+			top_p: 0.95,
+		})
+
+		expect("temperature" in normalized).toBe(false)
+		expect("top_p" in normalized).toBe(false)
+	})
+
 	test("preserves caller-provided instructions and always disables storage", () => {
 		const normalized = normalizeCodexResponsesBody(
 			{
