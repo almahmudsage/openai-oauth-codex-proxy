@@ -6,10 +6,7 @@ const root = join(import.meta.dir, "..")
 const packageDirs = [
 	"packages/core",
 	"packages/local",
-	"packages/web",
-	"packages/openai-client",
 	"packages/ai-sdk",
-	"packages/react",
 	"packages/openai-oauth",
 ]
 

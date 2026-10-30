@@ -37,9 +37,6 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
-      - name: Check browser packages
-        run: bun run check:browser
-
       - name: Test
         run: bun run test
 

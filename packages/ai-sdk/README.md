@@ -1,6 +1,6 @@
 # @openai-oauth/ai-sdk
 
-[Docs](https://github.com/EvanZhouDev/openai-oauth#client-adapters) | [GitHub](https://github.com/EvanZhouDev/openai-oauth) | [npm](https://www.npmjs.com/package/@openai-oauth/ai-sdk)
+[CLI docs](../../README.md) | [npm](https://www.npmjs.com/package/@openai-oauth/ai-sdk)
 
 Connect OpenAI OAuth credentials to the Vercel AI SDK.
 
@@ -56,27 +56,6 @@ import { openaiCredentials } from "@openai-oauth/local";
 const openai = createOpenAIOAuth(openaiCredentials());
 ```
 
-Use browser credentials after Sign in with ChatGPT:
-
-```ts
-import { createOpenAIOAuth } from "@openai-oauth/ai-sdk";
-import { openaiCredentials } from "@openai-oauth/react/server";
-import { generateText } from "ai";
-
-export async function POST(request: Request) {
-	const openai = createOpenAIOAuth(openaiCredentials(request));
-
-	const result = await generateText({
-		model: openai("gpt-5.4-mini"),
-		prompt: await request.text(),
-	});
-
-	return new Response(result.text);
-}
-```
-
-Use `@openai-oauth/react` to establish the browser credentials. See the [React Component setup](https://github.com/EvanZhouDev/openai-oauth#react-component).
-
 API shape:
 
 ```ts
@@ -99,4 +78,4 @@ Exports:
 
 ## More
 
-[Learn more in the openai-oauth README.](https://github.com/EvanZhouDev/openai-oauth#client-adapters)
+See the [proxy CLI documentation](../../README.md) for running the local OpenAI-compatible server.

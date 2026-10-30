@@ -10,10 +10,7 @@ const requestedArgs = process.argv.slice(2)
 const packageDirs = [
 	"packages/core",
 	"packages/local",
-	"packages/web",
-	"packages/openai-client",
 	"packages/ai-sdk",
-	"packages/react",
 	"packages/openai-oauth",
 ]
 const version = JSON.parse(

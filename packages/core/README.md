@@ -8,7 +8,7 @@ Lowest-level OpenAI OAuth and OpenAI-compatible transport primitives.
 npm i @openai-oauth/core
 ```
 
-Most apps should use `openai-oauth`, `@openai-oauth/local`, `@openai-oauth/react`, `@openai-oauth/ai-sdk`, or `@openai-oauth/openai-client` instead.
+The proxy CLI and its runtime packages use this transport internally.
 
 ## Package Notes
 
